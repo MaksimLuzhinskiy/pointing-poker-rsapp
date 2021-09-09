@@ -1,0 +1,32 @@
+.footer {
+  height: 70px;
+  width: 100%;
+  background-color: #2b3a67;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  &__team {
+    & .team {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      & .team__item {
+        display: block;
+        & a {
+          color: black;
+          &:hover {
+            color: gray;
+          }
+        }
+      }
+    }
+  }
+  &__rsschool {
+    display: flex;
+    align-items: center;
+    & img {
+      height: 40px;
+    }
+  }
+}
