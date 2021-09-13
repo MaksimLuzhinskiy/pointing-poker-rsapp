@@ -7,7 +7,6 @@ import AppRouter from './components/appRouter/AppRouter';
 import openSocket from 'socket.io-client';
 
 const App: FC = () => {
-  // const socket = openSocket('https://pointing-poker-rsapp.herokuapp.com/');
   return (
     <div className="app">
       <Header />

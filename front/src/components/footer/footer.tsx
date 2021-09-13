@@ -11,22 +11,6 @@ const Footer = () => {
           {teamMember.map((item) => (
             <FooterItem key={item.id} name={item.name} github={item.github} />
           ))}
-
-          {/* <li className="team__item">
-            <a href="https://github.com/MaksimLuzhinskiy" target="_blank">
-              Максим Лужинский
-            </a>
-          </li>
-          <li className="team__item">
-            <a href="https://github.com/arturyaroshinski" target="_blank">
-              Артур Ярошинский
-            </a>
-          </li>
-          <li className="team__item">
-            <a href="https://github.com/Dovoyan" target="_blank">
-              Коваленков Ян
-            </a>
-          </li> */}
         </ul>
       </div>
       <div className="footer__rsschool">
