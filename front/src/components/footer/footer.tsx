@@ -1,12 +1,18 @@
 import React from 'react';
 import './footer.scss';
+import FooterItem from './footerItem/footerItem';
+import teamMember from './constants';
 
 const Footer = () => {
   return (
     <div className="footer">
       <div className="footer__team">
         <ul className="team">
-          <li className="team__item">
+          {teamMember.map((item) => (
+            <FooterItem key={item.id} name={item.name} github={item.github} />
+          ))}
+
+          {/* <li className="team__item">
             <a href="https://github.com/MaksimLuzhinskiy" target="_blank">
               Максим Лужинский
             </a>
@@ -20,7 +26,7 @@ const Footer = () => {
             <a href="https://github.com/Dovoyan" target="_blank">
               Коваленков Ян
             </a>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="footer__rsschool">
