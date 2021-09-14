@@ -6,10 +6,10 @@ const Header = () => {
     <div className="header">
       <div className="header__top">
         <div className="header__logo">
-          <img src="./logo.png" alt="" />
+          <img src="../logo.png" alt="" />
         </div>
         <div className="header__chat">
-          <img src="./Vector.png" alt="" />
+          <img src="../Vector.png" alt="" />
         </div>
       </div>
       <div className="header__bottom"></div>
