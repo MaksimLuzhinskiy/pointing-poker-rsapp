@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IInput } from '../../../../interfaces';
 import './inputFile.scss';
 
 const InputFile: FC<IInput> = ({ id, onChange }: IInput) => {
+  const { t, i18n } = useTranslation();
   const onchangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');
@@ -21,10 +23,10 @@ const InputFile: FC<IInput> = ({ id, onChange }: IInput) => {
   return (
     <div className="fileInput">
       <label>
-        <div className="title">Image:</div>
+        <div className="title">{t('form.inputImage.inputImageTitle')}</div>
         <div className="fakebutton">
-          <div className="fakebutton__left">Choose file</div>
-          <div className="fakebutton__right">Button</div>
+          <div className="fakebutton__left">{t('form.inputImage.ChooseFile')}</div>
+          <div className="fakebutton__right">{t('form.inputImage.Buttonfile')}</div>
         </div>
         <input
           type="file"

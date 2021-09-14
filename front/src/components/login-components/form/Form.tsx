@@ -10,6 +10,7 @@ import { closeForm } from '../../../store/slice';
 import ButtonConfirm from './buttonConfirm/ButtonConfirm';
 import ButtonClose from './buttonClose/ButtonClose';
 import Switcher from './switcher/Switcher';
+import { useTranslation } from 'react-i18next';
 
 const WrapForm = styled.div`
   position: absolute;
@@ -47,8 +48,9 @@ const Form = () => {
     image: '',
   });
 
+  const { t, i18n } = useTranslation();
+
   const onchangeStateForm = (name: string, title: string) => {
-    console.log(name, title);
     const copyFormName = Object.assign({}, formName);
     copyFormName[name] = title;
     setFormName(copyFormName);
@@ -60,27 +62,26 @@ const Form = () => {
     }
   };
 
-  console.log(formName);
   return (
     <WrapForm onClick={closeFormLogin}>
       <form className="form-login" action="">
         <Row className="form-login__margin">
           <Col span={15}>
-            <div className="form-login__title">Connect to lobby</div>
+            <div className="form-login__title">{t('form.formTitle')}</div>
             <InputText
-              title="Your first name:"
+              title={t('form.inputFirstName')}
               id="firstName"
               value={formName.firstName}
               onChange={onchangeStateForm}
             ></InputText>
             <InputText
-              title="Your last name:"
+              title={t('form.inputLastName')}
               id="lastName"
               value={formName.lastName}
               onChange={onchangeStateForm}
             ></InputText>
             <InputText
-              title="Your job position:"
+              title={t('form.inputJobPosition')}
               id="jobPosition"
               value={formName.jobPosition}
               onChange={onchangeStateForm}
@@ -102,7 +103,7 @@ const Form = () => {
           </Col>
           <Col span={9}>
             <WrapSwitcher>
-              <div className="switcher-title">Connect as Observer</div>
+              <div className="switcher-title">{t('form.ConnectObservertitle')}</div>
               <Switcher />
             </WrapSwitcher>
           </Col>

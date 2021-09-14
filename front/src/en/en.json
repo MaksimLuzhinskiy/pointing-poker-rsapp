@@ -1,0 +1,31 @@
+{
+  "createRooms": {
+    "createRoomsTitle": "Start your planning",
+    "createRoomsTitleHelp": "Create session:"
+  },
+  "connectToRoomsTitle": {
+    "or": "OR",
+    "connectTitle": "Connect to lobby by",
+    "colorConnectTitle": "URL"
+  },
+  "button": {
+    "createRoomsButton": "Start new game",
+    "connectToLobbyButton": "Connect"
+  },
+  "form": {
+    "formTitle": "Connect to lobby",
+    "inputFirstName": "Your first name:",
+    "inputLastName": "Your last name:",
+    "inputJobPosition": "Your job position:",
+    "inputImage": {
+      "inputImageTitle": "Image",
+      "ChooseFile": "Choose File",
+      "Buttonfile": "Button"
+    },
+    "ConnectObservertitle": "Connect as Observer",
+    "button": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  }
+}
