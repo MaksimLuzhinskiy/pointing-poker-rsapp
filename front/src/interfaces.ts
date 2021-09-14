@@ -7,4 +7,5 @@ export interface IInput {
 
 export interface IRedux {
   login: boolean;
+  auth: boolean;
 }
