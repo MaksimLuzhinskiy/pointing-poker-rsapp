@@ -1,0 +1,26 @@
+.form-kick {
+  width: 875px;
+  height: 500px;
+  background-color: white;
+  margin: 100px auto;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__title {
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 75px;
+    text-align: center;
+    color: #000000;
+  }
+  &__info {
+    font-family: 'Ruda';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    text-align: center;
+    color: #000000;
+  }
+}
