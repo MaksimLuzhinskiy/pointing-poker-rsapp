@@ -1,0 +1,48 @@
+.issueCard {
+  width: 300px;
+  height: 76px;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-right: 16px;
+  margin-bottom: 10px;
+  &__title {
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+  }
+  &__priority {
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 12px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+  }
+  &__karandash {
+    margin-right: 10px;
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover path {
+      fill: #2b3a67;
+    }
+  }
+  &__trashbox {
+    &:hover {
+      cursor: pointer;
+    }
+    &:hover path {
+      fill: #2b3a67;
+    }
+  }
+}

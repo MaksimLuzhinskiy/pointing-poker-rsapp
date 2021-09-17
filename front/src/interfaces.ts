@@ -9,3 +9,9 @@ export interface IRedux {
   login: boolean;
   auth: boolean;
 }
+
+export interface IValueIssueForm {
+  title: string;
+  link: string;
+  priority: string;
+}

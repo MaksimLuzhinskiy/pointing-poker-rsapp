@@ -24,6 +24,8 @@ const Form = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector<IRedux>((state) => state.login);
 
+  const [isObserver, setIsObserver] = useState(false);
+
   const [formName, setFormName] = useState<IStateForm>({
     firstName: '',
     lastName: '',
@@ -43,6 +45,10 @@ const Form = () => {
     if (e.target === e.currentTarget) {
       dispatch(closeForm());
     }
+  };
+
+  const changeisObserver = (title: boolean) => {
+    setIsObserver(title);
   };
 
   return (
@@ -87,7 +93,7 @@ const Form = () => {
           <Col span={9}>
             <WrapSwitcher>
               <div className="switcher-title">{t('form.ConnectObservertitle')}</div>
-              <Switcher />
+              <Switcher value={isObserver} setValue={changeisObserver} />
             </WrapSwitcher>
           </Col>
         </Row>
