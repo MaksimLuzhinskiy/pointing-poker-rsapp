@@ -1,4 +1,5 @@
 import React from 'react';
+import { toggleChat } from '../chat-componets/toggleChat';
 import './header.scss';
 
 const Header = () => {
@@ -9,7 +10,13 @@ const Header = () => {
           <img src="../logo.png" alt="" />
         </div>
         <div className="header__chat">
-          <img src="../Vector.png" alt="" />
+          <img
+            onClick={() => {
+              toggleChat();
+            }}
+            src="../Vector.png"
+            alt=""
+          />
         </div>
       </div>
       <div className="header__bottom"></div>
