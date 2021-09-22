@@ -18,7 +18,7 @@ const SmallForm = () => {
     <form className="connectToLobby__form" action="">
       <Wrap>
         <Input valueInput={url} handleChange={handleChange} />
-        <OpenFormButton type="connect" title="Connect"></OpenFormButton>
+        <OpenFormButton link={url} type="connect" title="Connect"></OpenFormButton>
       </Wrap>
     </form>
   );

@@ -1,34 +1,36 @@
 import { Col, Row } from 'antd/lib/grid';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import './Form.scss';
 import InputText from './inputText/inputText';
 import InputFile from './inputFile/inputFile';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRedux } from '../../../interfaces';
+import { IRedux, ItypeNamePaylod } from '../../../interfaces';
 import { closeForm } from '../../../store/slice';
 import ButtonConfirm from './buttonConfirm/ButtonConfirm';
 import ButtonClose from './buttonClose/ButtonClose';
 import Switcher from './switcher/Switcher';
 import { useTranslation } from 'react-i18next';
 import WrapForm, { WrapFlex, WrapSwitcher } from './constans';
+import socket from '../../../socket';
+import { useHistory } from 'react-router-dom';
+import Role from '../../../enum';
 
 export interface IStateForm {
-  firstName: string;
-  lastName: string;
+  name: string;
+  surname: string;
   jobPosition: string;
   image?: string;
 }
 
 const Form = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const isOpen = useSelector<IRedux>((state) => state.login);
-
+  const typeForm = useSelector<IRedux, ItypeNamePaylod>((state) => state.typeForm);
   const [isObserver, setIsObserver] = useState(false);
-
   const [formName, setFormName] = useState<IStateForm>({
-    firstName: '',
-    lastName: '',
+    name: '',
+    surname: '',
     jobPosition: '',
     image: '',
   });
@@ -51,6 +53,43 @@ const Form = () => {
     setIsObserver(title);
   };
 
+  const role = (): string => {
+    if (isObserver) {
+      return Role.spectator;
+    } else {
+      return Role.player;
+    }
+  };
+
+  const buttonConf = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    switch (typeForm.type) {
+      case 'create':
+        {
+          socket.emit('create-room', { ...formName, role: Role.dealer });
+          socket.on('create-room', (res: { code: string }) => {
+            localStorage.setItem(
+              res.code,
+              JSON.stringify({ ...formName, role: Role.dealer })
+            );
+          });
+        }
+        break;
+      case 'connect': {
+        // console.log('connect');
+        socket.emit('join-room', {
+          userInfo: { ...formName, role: role() },
+          code: typeForm.link,
+        });
+        localStorage.setItem(
+          typeForm.link,
+          JSON.stringify({ ...formName, role: role() })
+        );
+        history.push(`/lobby/${typeForm.link}`);
+      }
+    }
+  };
+
   return (
     <WrapForm onClick={closeFormLogin}>
       <form className="form-login" action="">
@@ -59,14 +98,14 @@ const Form = () => {
             <div className="form-login__title">{t('form.formTitle')}</div>
             <InputText
               title={t('form.inputFirstName')}
-              id="firstName"
-              value={formName.firstName}
+              id="name"
+              value={formName.name}
               onChange={onchangeStateForm}
             ></InputText>
             <InputText
               title={t('form.inputLastName')}
-              id="lastName"
-              value={formName.lastName}
+              id="surname"
+              value={formName.surname}
               onChange={onchangeStateForm}
             ></InputText>
             <InputText
@@ -100,7 +139,7 @@ const Form = () => {
         <Row>
           <Col span={24}>
             <WrapFlex>
-              <ButtonConfirm></ButtonConfirm>
+              <ButtonConfirm conf={buttonConf}></ButtonConfirm>
               <ButtonClose></ButtonClose>
             </WrapFlex>
           </Col>

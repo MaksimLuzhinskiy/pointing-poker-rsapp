@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import InputCopy from './inputCopy/InputCopy';
+import { useSelector } from 'react-redux';
 import './MetadataCopyLink.scss';
+import { IRedux, IRoomInfo } from '../../../../interfaces';
 
 const WrapCopyLink = styled.div`
   display: flex;
@@ -9,12 +11,12 @@ const WrapCopyLink = styled.div`
 
 const MetadataCopylink = () => {
   // Пока статика
-  const value = '53754745773tb';
+  const info = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
 
   const [tooltipTitle, setTooltipTitle] = useState('Copy to clipboard');
 
   const clickButton = () => {
-    window.navigator.clipboard.writeText(value);
+    window.navigator.clipboard.writeText(info.code);
     setTooltipTitle('Copied');
   };
 
@@ -26,7 +28,7 @@ const MetadataCopylink = () => {
     <div>
       <div className="linkLobby-title">Link lobby(static)</div>
       <WrapCopyLink>
-        <InputCopy value={String(value)} />
+        <InputCopy value={String(info.code)} />
         <div className="tooltip">
           <button
             className="openFormButton"
