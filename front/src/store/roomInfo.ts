@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { IRoomInfo } from '../interfaces';
+import { IRoomInfo, IUser } from '../interfaces';
 
 const initialState: IRoomInfo = { code: '', users: [], issues: [] };
 
@@ -19,7 +19,12 @@ export const fetchAllInfo = createAsyncThunk('room', async (url: string) => {
 const RoomInfo = createSlice({
   name: 'roomInfo',
   initialState,
-  reducers: {},
+  reducers: {
+    addUser: (state, action: PayloadAction<IUser>) => {
+      state.users.push(action.payload);
+      return state;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAllInfo.fulfilled, (state, action) => {
       state = action.payload;
@@ -29,4 +34,4 @@ const RoomInfo = createSlice({
 });
 
 export default RoomInfo.reducer;
-export const {} = RoomInfo.actions;
+export const { addUser } = RoomInfo.actions;

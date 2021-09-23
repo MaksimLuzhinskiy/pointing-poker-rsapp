@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Card from '../card/Card';
 import './Lobbymembers.scss';
@@ -25,6 +25,7 @@ const Lobbymembers = () => {
   const members = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
   const [isKicked, setIsKicked] = useState(false);
   const [nameKickPlayer, setNameKickPlayer] = useState('');
+  const [member, setMember] = useState<IUserMutate[]>([]);
   const openFormKicked = (name: string) => {
     setIsKicked(!isKicked);
     setNameKickPlayer(name);
@@ -35,7 +36,8 @@ const Lobbymembers = () => {
     setNameKickPlayer('');
   };
 
-  const trueMembers = (): IUserMutate[] => {
+  const trueMembers = () => {
+    console.log('grgrgrg');
     const infoLocal: IUser = JSON.parse(localStorage.getItem(members.code) || '{}');
     const players = members.users.filter((element) => {
       return element.role !== Role.dealer;
@@ -47,14 +49,17 @@ const Lobbymembers = () => {
         ? { ...player, isYou: true }
         : { ...player, isYou: false };
     });
-    return playersReturn;
+    setMember(playersReturn);
   };
+  useEffect(() => {
+    trueMembers();
+  }, [members]);
 
   return (
     <div>
       <div className="members-title">Members:</div>
       <WrapMembers>
-        {trueMembers().map((user) => {
+        {member.map((user) => {
           return (
             <Card
               key={user.id}

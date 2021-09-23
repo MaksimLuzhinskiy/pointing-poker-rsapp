@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './lobby.scss';
 import axios from 'axios';
 import LobbyMetadata from './../../components/lobby/lobby-metadata/LobbyMetadata';
@@ -9,8 +8,8 @@ import LobbySetting from '../../components/lobby/lobby-setting/LobbySetting';
 import socket from '../../socket';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllInfo } from '../../store/roomInfo';
-import { IRedux, IRoomInfo } from '../../interfaces';
+import { addUser, fetchAllInfo } from '../../store/roomInfo';
+import { IRedux, IRoomInfo, IUser } from '../../interfaces';
 
 type QuizParams = {
   idlobby: string;
@@ -26,14 +25,35 @@ export interface IUsers {
   role: string;
 }
 
-socket.on('join-room', (res: any) => {
-  console.log(res);
-});
+// socket.on('join-room', (res: IUser) => {
+//   console.log(res);
+//   setNewUser(res);
+// });
 
 const Lobby = () => {
   const dispatch = useDispatch();
   const { idlobby } = useParams<QuizParams>();
-  // const info = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
+
+  // socket.on('join-room', (res: IUser) => {
+  //   console.log(res);
+  //   setNewUser(res);
+  // });
+
+  // useEffect(() => {
+  //   if (newUser !== undefined) {
+  //     dispatch(addUser(newUser));
+  //   }
+  // }, [newUser]);
+
+  useEffect(() => {
+    socket.on('join-room', (res: IUser) => {
+      console.log(res);
+      dispatch(addUser(res));
+    });
+    return () => {
+      socket.off('join-room');
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchAllInfo(idlobby));
