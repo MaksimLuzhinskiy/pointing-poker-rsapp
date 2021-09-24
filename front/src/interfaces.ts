@@ -22,8 +22,15 @@ export interface IValueIssueForm {
   link: string;
   priority: string;
 }
+export interface IIssues {
+  id: string;
+  title: string;
+  link: string;
+  priority: string;
+}
 
 export interface IRoomInfo {
+  id: string;
   code: string;
   users: {
     id: number;
@@ -34,6 +41,7 @@ export interface IRoomInfo {
     image: string;
   }[];
   issues: {
+    id: string;
     title: string;
     priority: string;
     link: string;

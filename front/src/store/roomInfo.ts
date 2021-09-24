@@ -2,14 +2,16 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IRoomInfo, IUser } from '../interfaces';
 
-const initialState: IRoomInfo = { code: '', users: [], issues: [] };
+const initialState: IRoomInfo = { id: '', code: '', users: [], issues: [] };
 
 export const fetchAllInfo = createAsyncThunk('room', async (url: string) => {
   const response = await axios.get<IRoomInfo>(
     `https://pointing-poker-rsapp.herokuapp.com/api/room/${url}`
   );
+  console.log(response);
 
   return {
+    id: response.data.id,
     code: response.data.code,
     users: response.data.users,
     issues: response.data.issues,

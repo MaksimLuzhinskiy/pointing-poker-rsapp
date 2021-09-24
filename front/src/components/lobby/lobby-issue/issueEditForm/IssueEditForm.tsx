@@ -1,27 +1,21 @@
 import axios from 'axios';
 import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { IRedux, IRoomInfo, IValueIssueForm } from '../../../../interfaces';
-import WrapForm from './../../../login-components/form/constans';
-import './IssueForm.scss';
-import IssueFormSelect from './issueFormSelect/IssueFormSelect';
-import IssueFormTextInput from './issueFormTextInput/IssueFormTextInput';
-import { IIssues } from './../../../../interfaces';
 import WrapFormIssueButtons, { FormBody } from '../../../../constStyledComponent';
+import { IIssues, IRedux, IRoomInfo, IValueIssueForm } from '../../../../interfaces';
+import WrapForm from '../../../login-components/form/constans';
+import IssueFormSelect from '../issueForm/issueFormSelect/IssueFormSelect';
+import IssueFormTextInput from '../issueForm/issueFormTextInput/IssueFormTextInput';
 
 export interface IForm {
   closeForm(): void;
-  addIssue(issueInfo: IIssues): void;
+  editForm(issueInfo: IIssues): void;
+  issue: IIssues;
 }
 
-const IssueForm: FC<IForm> = ({ closeForm, addIssue }: IForm) => {
+const IssueEditForm: FC<IForm> = ({ closeForm, editForm, issue }: IForm) => {
   const infoRoom = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
-  const [valueIssueForm, setValueissueForm] = useState<IValueIssueForm>({
-    title: '',
-    link: '',
-    priority: '',
-  });
+  const [valueIssueForm, setValueissueForm] = useState<IValueIssueForm>(issue);
 
   const ChangeStateForm = (title: string, value: string) => {
     const copy = Object.assign({}, valueIssueForm);
@@ -38,25 +32,27 @@ const IssueForm: FC<IForm> = ({ closeForm, addIssue }: IForm) => {
     e.preventDefault();
     closeForm();
   };
-
-  const addIssueButton = (e: React.FormEvent<HTMLButtonElement>) => {
+  const editIssueButton = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axios
-      .post<IIssues>(`https://pointing-poker-rsapp.herokuapp.com/api/issue`, {
-        title: valueIssueForm.title,
-        link: valueIssueForm.link,
-        priority: valueIssueForm.priority,
-        roomId: infoRoom.id,
-      })
+      .put<IIssues>(
+        `https://pointing-poker-rsapp.herokuapp.com/api/issue/${issue.id}`,
+        {
+          title: valueIssueForm.title,
+          link: valueIssueForm.link,
+          priority: valueIssueForm.priority,
+          roomId: infoRoom.id,
+        }
+      )
       .then((res) => {
-        return addIssue(res.data);
+        editForm(res.data);
       });
     closeForm();
   };
   return (
     <WrapForm onClick={closeFormIssue}>
       <form className="issueForm" action="">
-        <div className="issueForm__title">Create Issue</div>
+        <div className="issueForm__title">Change Issue</div>
         <FormBody>
           <IssueFormTextInput
             title="Title:"
@@ -78,7 +74,7 @@ const IssueForm: FC<IForm> = ({ closeForm, addIssue }: IForm) => {
           ></IssueFormSelect>
         </FormBody>
         <WrapFormIssueButtons>
-          <button className="confirmButton" onClick={addIssueButton}>
+          <button className="confirmButton" onClick={editIssueButton}>
             Yes
           </button>
           <button className="closeButton" onClick={closeFormIssueButton}>
@@ -90,4 +86,4 @@ const IssueForm: FC<IForm> = ({ closeForm, addIssue }: IForm) => {
   );
 };
 
-export default IssueForm;
+export default IssueEditForm;

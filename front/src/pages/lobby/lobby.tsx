@@ -25,29 +25,11 @@ export interface IUsers {
   role: string;
 }
 
-// socket.on('join-room', (res: IUser) => {
-//   console.log(res);
-//   setNewUser(res);
-// });
-
 const Lobby = () => {
   const dispatch = useDispatch();
   const { idlobby } = useParams<QuizParams>();
-
-  // socket.on('join-room', (res: IUser) => {
-  //   console.log(res);
-  //   setNewUser(res);
-  // });
-
-  // useEffect(() => {
-  //   if (newUser !== undefined) {
-  //     dispatch(addUser(newUser));
-  //   }
-  // }, [newUser]);
-
   useEffect(() => {
     socket.on('join-room', (res: IUser) => {
-      console.log(res);
       dispatch(addUser(res));
     });
     return () => {
