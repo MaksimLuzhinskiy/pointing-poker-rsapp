@@ -1,4 +1,4 @@
 export function toggleChat() {
-  const chatField = document.querySelector('.chatField');
+  const chatField = document.querySelector('.chatArea');
   chatField?.classList.toggle('chatInvisibility');
 }
