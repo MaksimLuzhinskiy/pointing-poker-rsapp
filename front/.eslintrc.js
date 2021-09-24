@@ -7,7 +7,7 @@ module.exports = {
     'airbnb-typescript',
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -19,12 +19,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  plugins: [
-    'prettier',
-    'react',
-    '@typescript-eslint',
-    'import'
-  ],
+  plugins: ['prettier', 'react', '@typescript-eslint', 'import'],
   rules: {
     'no-unused-vars': 'warn',
     'no-console': 'warn',
@@ -33,12 +28,13 @@ module.exports = {
     'object-shorthand': 'off',
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',
+    'react-hooks/exhaustive-deps': 'off',
     'prettier/prettier': [
       'error',
       {
         endOfLine: 'auto',
-        singleQuote: true
-      }
+        singleQuote: true,
+      },
     ],
   },
 };

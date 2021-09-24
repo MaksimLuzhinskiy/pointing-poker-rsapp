@@ -1,12 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { IRedux, IRoomInfo } from '../../../../interfaces';
 import './TitleMetadata.scss';
 
 const TitleMetadata = () => {
+  const info = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
   return (
     <div className="title">
-      <div className="title__string">
-        Spring 23 planning (issues 13, 533, 5623, 3252, 6623, ...)
-      </div>
+      <div className="title__string">Room {info.code}</div>
       <svg
         width="19"
         height="18"

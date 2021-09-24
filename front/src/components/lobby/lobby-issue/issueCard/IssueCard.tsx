@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { IIssues } from '../../../../interfaces';
 import './IssueCard.scss';
 
 const WrapIssueTitle = styled.div`
@@ -15,19 +17,41 @@ const WrapIssueOptions = styled.div`
 
 export interface IIssueCard {
   id: string;
-  name: string;
+  title: string;
   priority: string;
+  link: string;
+  changeCard(selectedIssue: IIssues): void;
+  deleteCard(id: string): void;
 }
 
-const IssueCard: FC<IIssueCard> = ({ name, priority }: IIssueCard) => {
+const IssueCard: FC<IIssueCard> = ({
+  id,
+  title,
+  priority,
+  link,
+  changeCard,
+  deleteCard,
+}: IIssueCard) => {
+  const changeIssue = () => {
+    changeCard({ id, title, link, priority });
+  };
+
+  const deleteIssue = () => {
+    axios
+      .delete(`https://pointing-poker-rsapp.herokuapp.com/api/issue/${id}`)
+      .then(() => {
+        deleteCard(id);
+      });
+  };
   return (
     <div className="issueCard">
       <WrapIssueTitle>
-        <div className="issueCard__title">{name}</div>
+        <div className="issueCard__title">{title}</div>
         <div className="issueCard__priority">{priority}</div>
       </WrapIssueTitle>
       <WrapIssueOptions>
         <svg
+          onClick={changeIssue}
           className="issueCard__karandash"
           width="26"
           height="26"
@@ -41,6 +65,7 @@ const IssueCard: FC<IIssueCard> = ({ name, priority }: IIssueCard) => {
           />
         </svg>
         <svg
+          onClick={deleteIssue}
           className="issueCard__trashbox"
           width="26"
           height="26"

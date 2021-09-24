@@ -15,7 +15,11 @@ const CreateRoom = () => {
       <Col className="createRoom__margin" span={14}>
         <div className="createRoom-form">
           <div className="help-title">{t('createRooms.createRoomsTitleHelp')}</div>
-          <OpenFormButton type="create" title={t('button.createRoomsButton')} />
+          <OpenFormButton
+            link=""
+            type="create"
+            title={t('button.createRoomsButton')}
+          />
         </div>
       </Col>
     </Row>

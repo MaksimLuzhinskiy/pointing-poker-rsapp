@@ -1,0 +1,33 @@
+.form-inputText {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  &__label {
+    font-family: 'Ruda';
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+  }
+  &__input {
+    background: #ffffff;
+    border: 1px solid #2b3a67;
+    box-sizing: border-box;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 0px 10px;
+    height: 37px;
+    width: 324px;
+    font-family: 'Ruda';
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 30px;
+    padding-left: 15px;
+    &:hover,
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}

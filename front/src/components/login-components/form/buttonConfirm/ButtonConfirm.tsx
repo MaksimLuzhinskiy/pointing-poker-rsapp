@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import './ButtonConfirm.scss';
 
-const ButtonConfirm = () => {
+export interface IButtonConfirm {
+  conf(e: React.FormEvent<HTMLButtonElement>): void;
+}
+
+const ButtonConfirm: FC<IButtonConfirm> = ({ conf }: IButtonConfirm) => {
   const { t, i18n } = useTranslation();
-  return <button className="confirmButton">{t('form.button.confirm')}</button>;
+  return (
+    <button onClick={conf} className="confirmButton">
+      {t('form.button.confirm')}
+    </button>
+  );
 };
 
 export default ButtonConfirm;
