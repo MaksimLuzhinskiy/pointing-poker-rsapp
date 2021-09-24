@@ -1,0 +1,49 @@
+.chatComponents {
+  display: flex;
+  margin-top: 10px;
+}
+
+.chatField {
+  overflow: scroll;
+}
+.chatArea {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 20px;
+  max-height: 500px;
+}
+
+.chatInvisibility {
+  display: none;
+}
+
+.chatComponent {
+  width: 200px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 5%;
+}
+
+.chatUser {
+  height: 55px;
+}
+
+.chatIcon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.chatUser__text {
+  margin-left: 10px;
+}
+
+.chatBan {
+  width: 30px;
+  margin-left: auto;
+  margin-right: 10px;
+}

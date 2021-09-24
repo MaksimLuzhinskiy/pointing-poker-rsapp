@@ -1,3 +1,4 @@
+import Chat from '../../components/chat-componets/chat';
 import React, { useEffect, useState } from 'react';
 import './lobby.scss';
 import axios from 'axios';
@@ -43,6 +44,7 @@ const Lobby = () => {
 
   return (
     <div className="lobby-page">
+      <Chat />
       <div className="lobby-content">
         <LobbyMetadata />
         <Lobbymembers />
