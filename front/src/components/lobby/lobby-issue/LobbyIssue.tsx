@@ -1,14 +1,13 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IIssues, IRedux, IRoomInfo, IValueIssueForm } from '../../../interfaces';
+import { IIssues, IRedux, IRoomInfo } from '../../../interfaces';
 import IssueButton from './issueButton/IssueButton';
 import IssueCard from './issueCard/IssueCard';
 import IssueEditForm from './issueEditForm/IssueEditForm';
 import IssueForm from './issueForm/IssueForm';
 import './LobbyIssue.scss';
 
-const LobbyIssue = () => {
+const LobbyIssue = (): ReactElement => {
   const issuesInitial = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
   const [issue, setIssue] = useState<IIssues[]>([]);
   const [isCreatingIssue, setIsCreatingIssue] = useState(false);

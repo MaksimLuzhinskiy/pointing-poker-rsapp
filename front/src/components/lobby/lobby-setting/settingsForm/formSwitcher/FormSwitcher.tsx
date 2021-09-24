@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Switcher from '../../../../login-components/form/switcher/Switcher';
+import './FormSwitcher.scss';
 
 export interface ISwitcher {
   name: string;
