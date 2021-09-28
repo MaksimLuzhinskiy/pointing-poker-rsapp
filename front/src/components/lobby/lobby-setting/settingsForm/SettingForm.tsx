@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import FormSwitcher from './formSwitcher/FormSwitcher';
 import FormText from './formText/FormText';
 import './SettingForm.scss';
+import RoundTimer from './roundTimer/roundTimer';
 
 export interface ISettings {
   masterAsPlayer: boolean;
@@ -9,6 +10,8 @@ export interface ISettings {
   isTimer: boolean;
   scoreType: string;
   scoreTypeShort: string;
+  minutes: string;
+  seconds: string;
 }
 
 const SettingForm = () => {
@@ -18,8 +21,10 @@ const SettingForm = () => {
     isTimer: false,
     scoreType: '',
     scoreTypeShort: '',
+    minutes: '0',
+    seconds: '0',
   });
-
+  const valueTimer = { minutes: settings.minutes, seconds: settings.seconds };
   const changeSetting = (name: string, title: string | boolean) => {
     const copy = Object.assign({}, settings);
     copy[name] = title;
@@ -57,6 +62,7 @@ const SettingForm = () => {
         title="Score type (Short):"
         value={settings.scoreTypeShort}
       ></FormText>
+      <RoundTimer value={valueTimer} changeValue={changeSetting} />
     </form>
   );
 };

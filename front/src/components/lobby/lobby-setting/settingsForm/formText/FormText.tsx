@@ -8,12 +8,7 @@ export interface IInputSetting {
   changeValue(name: string, title: boolean | string);
 }
 
-const FormText: FC<IInputSetting> = ({
-  name,
-  title,
-  value,
-  changeValue,
-}: IInputSetting) => {
+const FormText: FC<IInputSetting> = ({ name, title, value, changeValue }) => {
   const setValue = (e: React.FormEvent<HTMLInputElement>) => {
     changeValue(name, e.currentTarget.value);
   };
