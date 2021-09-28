@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, fetchAllInfo } from '../../store/roomInfo';
 import { IRedux, IRoomInfo, IUser } from '../../interfaces';
+import LobbyCard from '../../components/lobby/lobby-card/LobbyCard';
 
 type QuizParams = {
   idlobby: string;
@@ -50,6 +51,7 @@ const Lobby = () => {
         <Lobbymembers />
         <LobbyIssue />
         <LobbySetting />
+        <LobbyCard />
       </div>
     </div>
   );

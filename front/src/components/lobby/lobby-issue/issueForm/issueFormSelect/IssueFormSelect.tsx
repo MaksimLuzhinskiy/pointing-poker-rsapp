@@ -9,12 +9,7 @@ export interface ISelect {
   onChangeValue(title, value): void;
 }
 
-const IssueFormSelect: FC<ISelect> = ({
-  title,
-  value,
-  id,
-  onChangeValue,
-}: ISelect) => {
+const IssueFormSelect: FC<ISelect> = ({ title, value, id, onChangeValue }) => {
   const arrayValue = ['Low', 'Middle', 'Hight'];
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(arrayValue[0]);
