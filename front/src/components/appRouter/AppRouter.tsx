@@ -3,26 +3,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { IRedux } from '../../interfaces';
+import ErrorPage from '../../pages/404/ErrorPage';
 import Lobby from '../../pages/lobby/lobby';
 import Login from '../../pages/login/login';
-import { privateRoutes, RouteName } from '../../router';
 import socket from '../../socket';
-import { loginAuth } from '../../store/authslice';
-import ErrorPage from '../404/ErrorPage';
-import { publicRoutes } from './../../router/index';
 
 const AppRouter = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isAuth = useSelector<IRedux>((state) => state.auth);
-  // const auth = () => {
-  //   const isAuthLocal = Boolean(localStorage.getItem('auth'));
-  //   if (isAuth) test = true;
-  // };
-
-  useEffect(() => {
-    // auth();
-  }, []);
 
   socket.on('create-room', (res: { code: string }) => {
     history.push(`/lobby/${res.code}`);
