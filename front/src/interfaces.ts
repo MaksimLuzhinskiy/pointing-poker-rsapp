@@ -15,6 +15,7 @@ export interface IRedux {
   auth: boolean;
   typeForm: ItypeNamePaylod;
   roomInfo: IRoomInfo;
+  role: string;
 }
 
 export interface IValueIssueForm {
@@ -55,4 +56,11 @@ export interface IUser {
   role: string;
   jobPosition: string;
   image: string;
+}
+
+export interface IDeck {
+  id: number;
+  name: string;
+  short: string;
+  value: Array<number | string>;
 }

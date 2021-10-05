@@ -55,7 +55,6 @@ const RoundTimer: FC<IInputSetting> = ({ value, changeValue }) => {
   };
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value);
     changeValue(
       e.currentTarget.id,
       String(validation(e.currentTarget.id, e.currentTarget.value))

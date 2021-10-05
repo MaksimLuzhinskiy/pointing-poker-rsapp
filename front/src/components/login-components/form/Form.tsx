@@ -14,6 +14,8 @@ import WrapForm, { WrapFlex, WrapSwitcher } from './constans';
 import socket from '../../../socket';
 import { useHistory } from 'react-router-dom';
 import Role from '../../../enum';
+import { setRole } from '../../../store/role';
+import { loginAuth } from '../../../store/authslice';
 
 export interface IStateForm {
   name: string;
@@ -66,24 +68,27 @@ const Form = () => {
     switch (typeForm.type) {
       case 'create':
         {
+          dispatch(loginAuth());
           socket.emit('create-room', { ...formName, role: Role.dealer });
           socket.on('create-room', (res: { code: string }) => {
+            dispatch(setRole(Role.dealer));
             localStorage.setItem(
               res.code,
-              JSON.stringify({ ...formName, role: Role.dealer })
+              JSON.stringify({ ...formName, role: Role.dealer, idSocket: socket.id })
             );
           });
         }
         break;
       case 'connect': {
-        // console.log('connect');
+        dispatch(loginAuth());
         socket.emit('join-room', {
           userInfo: { ...formName, role: role() },
           code: typeForm.link,
         });
+        dispatch(setRole(role()));
         localStorage.setItem(
           typeForm.link,
-          JSON.stringify({ ...formName, role: role() })
+          JSON.stringify({ ...formName, role: role(), idSocket: socket.id })
         );
         history.push(`/lobby/${typeForm.link}`);
       }

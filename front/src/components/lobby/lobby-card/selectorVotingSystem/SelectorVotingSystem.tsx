@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { IDeck } from '../../../../interfaces';
 import './SelectorVotingSystem.scss';
 
 export interface ISelect {
@@ -6,26 +7,22 @@ export interface ISelect {
   value?: string;
   id?: string;
   createDeck(): void;
+  deck: IDeck[];
+  selectCardDeck: IDeck;
+  changeSelectCardDeck(t: IDeck): void;
 }
 
-export interface IValueSelect {
-  id: number;
-  name: string;
-  value: Array<number | string>;
-}
-
-const SelectorVotingSystem: FC<ISelect> = ({ title, value, id, createDeck }) => {
-  const arrayValue: IValueSelect[] = [
-    { id: 1, name: 'Fibonacci', value: [0, 1, 3, 5, 8, 13, 21, 32, 55, 89] },
-    { id: 2, name: 'Powers of 2', value: [0, 1, 2, 4, 8, 16, 32, 64] },
-    {
-      id: 3,
-      name: 'T-shirts',
-      value: ['xxx', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
-    },
-  ];
+const SelectorVotingSystem: FC<ISelect> = ({
+  title,
+  value,
+  id,
+  createDeck,
+  deck,
+  changeSelectCardDeck,
+}) => {
+  const arrayValue: IDeck[] = deck;
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<IValueSelect>(arrayValue[0]);
+  const [selected, setSelected] = useState<IDeck>(arrayValue[0]);
 
   const selectValue = (e: React.FormEvent<HTMLDivElement>) => {
     const el = arrayValue.find((element) => {
@@ -37,7 +34,7 @@ const SelectorVotingSystem: FC<ISelect> = ({ title, value, id, createDeck }) => 
   };
 
   useEffect(() => {
-    // onChangeValue(id, selected);
+    changeSelectCardDeck(selected);
   }, [selected]);
   const openSelect = () => {
     setIsOpen(!isOpen);

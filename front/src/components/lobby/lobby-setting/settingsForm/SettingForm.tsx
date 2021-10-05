@@ -8,8 +8,6 @@ export interface ISettings {
   masterAsPlayer: boolean;
   changingEndCard: boolean;
   isTimer: boolean;
-  scoreType: string;
-  scoreTypeShort: string;
   minutes: string;
   seconds: string;
 }
@@ -19,8 +17,6 @@ const SettingForm = () => {
     masterAsPlayer: false,
     changingEndCard: false,
     isTimer: false,
-    scoreType: '',
-    scoreTypeShort: '',
     minutes: '0',
     seconds: '0',
   });
@@ -50,7 +46,7 @@ const SettingForm = () => {
         title="Is timer needed:"
         changeValue={changeSetting}
       ></FormSwitcher>
-      <FormText
+      {/* <FormText
         name="scoreType"
         changeValue={changeSetting}
         title="Score type:"
@@ -61,8 +57,10 @@ const SettingForm = () => {
         changeValue={changeSetting}
         title="Score type (Short):"
         value={settings.scoreTypeShort}
-      ></FormText>
-      <RoundTimer value={valueTimer} changeValue={changeSetting} />
+      ></FormText> */}
+      {settings.isTimer && (
+        <RoundTimer value={valueTimer} changeValue={changeSetting} />
+      )}
     </form>
   );
 };

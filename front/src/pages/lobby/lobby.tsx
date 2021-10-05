@@ -1,17 +1,18 @@
 import Chat from '../../components/chat-componets/chat';
 import React, { useEffect, useState } from 'react';
 import './lobby.scss';
-import axios from 'axios';
+
 import LobbyMetadata from './../../components/lobby/lobby-metadata/LobbyMetadata';
 import Lobbymembers from './../../components/lobby/lobby-members/Lobbymembers';
 import LobbyIssue from './../../components/lobby/lobby-issue/LobbyIssue';
 import LobbySetting from '../../components/lobby/lobby-setting/LobbySetting';
-import socket from '../../socket';
+import socket, { isConnect } from '../../socket';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addUser, fetchAllInfo } from '../../store/roomInfo';
-import { IRedux, IRoomInfo, IUser } from '../../interfaces';
+import { IUser } from '../../interfaces';
 import LobbyCard from '../../components/lobby/lobby-card/LobbyCard';
+import Role from '../../enum';
 
 type QuizParams = {
   idlobby: string;
@@ -27,15 +28,70 @@ export interface IUsers {
   role: string;
 }
 
+export interface IUserJson {
+  name: string;
+  surname: string;
+  jobPosition: string;
+  image: string;
+  role: string;
+  idSocket: string;
+}
+
+export interface IReconnect {
+  socketId: string;
+  roomCode: string;
+}
+
 const Lobby = () => {
   const dispatch = useDispatch();
   const { idlobby } = useParams<QuizParams>();
-  useEffect(() => {
-    socket.on('join-room', (res: IUser) => {
-      dispatch(addUser(res));
+  const role: IUser = JSON.parse(localStorage.getItem(idlobby) || '{}');
+  const [isOpenSocket, setIsOpenSocket] = useState(isConnect);
+
+  const isReload = () => {
+    const promise = new Promise((resolve, reject) => {
+      setInterval(() => {
+        if (isConnect === true) {
+          resolve(isConnect);
+          clearInterval();
+        }
+      }, 100);
+    }).then((res) => {
+      const userInfo: IUserJson = JSON.parse(localStorage.getItem(idlobby) || '');
+      const isId = userInfo.idSocket === socket.id;
+      if (isId) {
+        console.log('Join room');
+        socket.on('join-room', (user: IUser) => {
+          dispatch(addUser(user));
+        });
+      } else {
+        console.log('reconnect');
+        const infoReconnect: IReconnect = {
+          socketId: localStorage.getItem('socketId') || '{}',
+          roomCode: idlobby,
+        };
+        socket.emit('reconnect', infoReconnect);
+      }
+      return setIsOpenSocket(isConnect);
     });
+  };
+  console.log(isOpenSocket);
+
+  const beforeUnload = () => {
+    const informationAboutUser: IUserJson = JSON.parse(
+      localStorage.getItem(idlobby) || '{}'
+    );
+    informationAboutUser.idSocket = socket.id;
+    localStorage.setItem(idlobby, JSON.stringify(informationAboutUser));
+  };
+
+  useEffect(() => {
+    isReload();
+    window.addEventListener('beforeunload', beforeUnload);
     return () => {
       socket.off('join-room');
+      socket.off('reconnect');
+      window.removeEventListener('beforeunload', beforeUnload);
     };
   }, []);
 
@@ -49,9 +105,15 @@ const Lobby = () => {
       <div className="lobby-content">
         <LobbyMetadata />
         <Lobbymembers />
-        <LobbyIssue />
-        <LobbySetting />
-        <LobbyCard />
+        {role.role === Role.player || role.role === Role.spectator ? (
+          ''
+        ) : (
+          <>
+            <LobbyIssue />
+            <LobbySetting />
+            <LobbyCard />
+          </>
+        )}
       </div>
     </div>
   );
