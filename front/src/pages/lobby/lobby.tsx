@@ -1,52 +1,31 @@
-import Chat from '../../components/chat-componets/chat';
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from 'react';
 import './lobby.scss';
-
-import LobbyMetadata from './../../components/lobby/lobby-metadata/LobbyMetadata';
-import Lobbymembers from './../../components/lobby/lobby-members/Lobbymembers';
-import LobbyIssue from './../../components/lobby/lobby-issue/LobbyIssue';
-import LobbySetting from '../../components/lobby/lobby-setting/LobbySetting';
 import socket, { isConnect } from '../../socket';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Redirect, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUser, fetchAllInfo } from '../../store/roomInfo';
-import { IUser } from '../../interfaces';
-import LobbyCard from '../../components/lobby/lobby-card/LobbyCard';
-import Role from '../../enum';
+import { IReconnect, IRedux, IRoomInfo, IUser, IUserJson } from '../../interfaces';
+import Room from '../../components/room/Room';
+import { loginAuth } from '../../store/authslice';
 
 type QuizParams = {
   idlobby: string;
 };
 
-export interface IUsers {
-  id: number;
-  roomId: number;
-  name: string;
-  surname: string;
-  jobPosition: string;
-  image: string;
-  role: string;
-}
-
-export interface IUserJson {
-  name: string;
-  surname: string;
-  jobPosition: string;
-  image: string;
-  role: string;
-  idSocket: string;
-}
-
-export interface IReconnect {
-  socketId: string;
-  roomCode: string;
-}
-
 const Lobby = () => {
   const dispatch = useDispatch();
   const { idlobby } = useParams<QuizParams>();
-  const role: IUser = JSON.parse(localStorage.getItem(idlobby) || '{}');
+  const roomInfo = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
   const [isOpenSocket, setIsOpenSocket] = useState(isConnect);
+
+  const isLoggin = () => {
+    if (roomInfo.status === 400) {
+      console.log('???');
+
+      window.location.assign(`http://${window.location.host}/404`);
+    }
+  };
 
   const isReload = () => {
     const promise = new Promise((resolve, reject) => {
@@ -75,14 +54,18 @@ const Lobby = () => {
       return setIsOpenSocket(isConnect);
     });
   };
-  console.log(isOpenSocket);
 
   const beforeUnload = () => {
+    // Информаци о юзере, для реконекта
     const informationAboutUser: IUserJson = JSON.parse(
       localStorage.getItem(idlobby) || '{}'
     );
     informationAboutUser.idSocket = socket.id;
     localStorage.setItem(idlobby, JSON.stringify(informationAboutUser));
+
+    //Сохранение логина
+    const isAuth = useSelector<IRedux, boolean>((state) => state.auth);
+    localStorage.setItem('auth', String(isAuth));
   };
 
   useEffect(() => {
@@ -99,23 +82,14 @@ const Lobby = () => {
     dispatch(fetchAllInfo(idlobby));
   }, [idlobby]);
 
+  useEffect(() => {
+    isLoggin();
+  }, [roomInfo]);
+
   return (
-    <div className="lobby-page">
-      <Chat />
-      <div className="lobby-content">
-        <LobbyMetadata />
-        <Lobbymembers />
-        {role.role === Role.player || role.role === Role.spectator ? (
-          ''
-        ) : (
-          <>
-            <LobbyIssue />
-            <LobbySetting />
-            <LobbyCard />
-          </>
-        )}
-      </div>
-    </div>
+    <>
+      <Room idlobby={idlobby}></Room>
+    </>
   );
 };
 

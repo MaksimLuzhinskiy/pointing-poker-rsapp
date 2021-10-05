@@ -31,6 +31,7 @@ export interface IIssues {
 }
 
 export interface IRoomInfo {
+  status?: number;
   id: string;
   code: string;
   users: {
@@ -63,4 +64,28 @@ export interface IDeck {
   name: string;
   short: string;
   value: Array<number | string>;
+}
+
+export interface IUsers {
+  id: number;
+  roomId: number;
+  name: string;
+  surname: string;
+  jobPosition: string;
+  image: string;
+  role: string;
+}
+
+export interface IUserJson {
+  name: string;
+  surname: string;
+  jobPosition: string;
+  image: string;
+  role: string;
+  idSocket: string;
+}
+
+export interface IReconnect {
+  socketId: string;
+  roomCode: string;
 }

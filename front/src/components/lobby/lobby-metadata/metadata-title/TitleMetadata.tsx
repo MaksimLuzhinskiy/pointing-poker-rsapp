@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IRedux, IRoomInfo } from '../../../../interfaces';
 import './TitleMetadata.scss';
 
 const TitleMetadata = () => {
   const info = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
+
+  const [roomName, setRoomName] = useState(`Room`);
+
+  const changeRoomName = (e: React.FormEvent<HTMLInputElement>) => {
+    setRoomName(e.currentTarget.value);
+  };
+
+  const mouseEnter = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.disabled = false;
+  };
+
+  const mouseOut = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.disabled = true;
+    e.currentTarget.blur();
+  };
   return (
     <div className="title">
-      <div className="title__string">Room {info.code}</div>
+      <input
+        className="title__input"
+        type="text"
+        name=""
+        onMouseOver={mouseEnter}
+        onMouseOut={mouseOut}
+        disabled={true}
+        onChange={changeRoomName}
+        id=""
+        value={roomName}
+      />
       <svg
         width="19"
         height="18"

@@ -1,16 +1,32 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IRoomInfo, IUser } from '../interfaces';
-
-const initialState: IRoomInfo = { id: '', code: '', users: [], issues: [] };
+const errorObj = {
+  status: 400,
+  data: {
+    id: '',
+    code: '',
+    users: [],
+    issues: [],
+  },
+};
+const initialState: IRoomInfo = {
+  status: 0,
+  id: '',
+  code: '',
+  users: [],
+  issues: [],
+};
 
 export const fetchAllInfo = createAsyncThunk('room', async (url: string) => {
-  const response = await axios.get<IRoomInfo>(
-    `https://pointing-poker-rsapp.herokuapp.com/api/room/${url}`
-  );
+  const response = await axios
+    .get<IRoomInfo>(`https://pointing-poker-rsapp.herokuapp.com/api/room/${url}`)
+    .then((res) => res)
+    .catch((res) => errorObj);
   console.log(response);
 
   return {
+    status: response.status,
     id: response.data.id,
     code: response.data.code,
     users: response.data.users,
@@ -30,6 +46,9 @@ const RoomInfo = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllInfo.fulfilled, (state, action) => {
       state = action.payload;
+      return state;
+    });
+    builder.addCase(fetchAllInfo.rejected, (state) => {
       return state;
     });
   },
