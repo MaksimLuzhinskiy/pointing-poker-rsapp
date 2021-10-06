@@ -37,7 +37,6 @@ const Lobbymembers = () => {
   };
 
   const trueMembers = () => {
-    console.log('grgrgrg');
     const infoLocal: IUser = JSON.parse(localStorage.getItem(members.code) || '{}');
     const players = members.users.filter((element) => {
       return element.role !== Role.dealer;

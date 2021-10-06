@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { IRedux } from '../../interfaces';
-import { privateRoutes, RouteName } from '../../router';
+import ErrorPage from '../../pages/404/ErrorPage';
+import Lobby from '../../pages/lobby/lobby';
+import Login from '../../pages/login/login';
 import socket from '../../socket';
-import { publicRoutes } from './../../router/index';
 
 const AppRouter = () => {
   const history = useHistory();
@@ -17,7 +18,7 @@ const AppRouter = () => {
   });
   return (
     <>
-      {isAuth ? (
+      {/* {isAuth ? (
         <Switch>
           {privateRoutes.map((route) => (
             <Route
@@ -40,7 +41,15 @@ const AppRouter = () => {
           ))}
           <Redirect to={RouteName.LOGIN} />
         </Switch>
-      )}
+      )} */}
+      <Switch>
+        <Route key="2" path="/login" component={Login}></Route>
+        <Route key="1" path="/lobby/:idlobby" exact={true} component={Lobby}></Route>
+        <Route key="3" path="/" exact={true}>
+          <Redirect to="/login" />
+        </Route>
+        <Route key="4" path="/404" component={ErrorPage}></Route>
+      </Switch>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { Col, Row } from 'antd/lib/grid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Form.scss';
 import InputText from './inputText/inputText';
 import InputFile from './inputFile/inputFile';
@@ -14,6 +14,8 @@ import WrapForm, { WrapFlex, WrapSwitcher } from './constans';
 import socket from '../../../socket';
 import { useHistory } from 'react-router-dom';
 import Role from '../../../enum';
+import { setRole } from '../../../store/role';
+import { loginAuth } from '../../../store/authslice';
 
 export interface IStateForm {
   name: string;
@@ -25,6 +27,7 @@ export interface IStateForm {
 const Form = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const isOpen = useSelector<IRedux>((state) => state.login);
   const typeForm = useSelector<IRedux, ItypeNamePaylod>((state) => state.typeForm);
   const [isObserver, setIsObserver] = useState(false);
@@ -34,8 +37,12 @@ const Form = () => {
     jobPosition: '',
     image: '',
   });
+  const [column, setColumn] = useState(0);
+  useEffect(() => {
+    setColumn((prev) => (typeForm.type === 'connect' ? 15 : 24));
+  }, [typeForm]);
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const onchangeStateForm = (name: string, title: string) => {
     const copyFormName = Object.assign({}, formName);
@@ -66,24 +73,27 @@ const Form = () => {
     switch (typeForm.type) {
       case 'create':
         {
+          dispatch(loginAuth());
           socket.emit('create-room', { ...formName, role: Role.dealer });
           socket.on('create-room', (res: { code: string }) => {
+            dispatch(setRole(Role.dealer));
             localStorage.setItem(
               res.code,
-              JSON.stringify({ ...formName, role: Role.dealer })
+              JSON.stringify({ ...formName, role: Role.dealer, idSocket: socket.id })
             );
           });
         }
         break;
       case 'connect': {
-        // console.log('connect');
+        dispatch(loginAuth());
         socket.emit('join-room', {
           userInfo: { ...formName, role: role() },
           code: typeForm.link,
         });
+        dispatch(setRole(role()));
         localStorage.setItem(
           typeForm.link,
-          JSON.stringify({ ...formName, role: role() })
+          JSON.stringify({ ...formName, role: role(), idSocket: socket.id })
         );
         history.push(`/lobby/${typeForm.link}`);
       }
@@ -94,8 +104,12 @@ const Form = () => {
     <WrapForm onClick={closeFormLogin}>
       <form className="form-login" action="">
         <Row className="form-login__margin">
-          <Col span={15}>
-            <div className="form-login__title">{t('form.formTitle')}</div>
+          <Col span={column}>
+            {typeForm.type === 'connect' ? (
+              <div className="form-login__title">{t('form.formTitle')}</div>
+            ) : (
+              <div className="form-login__title">{t('form.formTitleisCreat')}</div>
+            )}
             <InputText
               title={t('form.inputFirstName')}
               id="name"
@@ -129,12 +143,16 @@ const Form = () => {
               ></img>
             )}
           </Col>
-          <Col span={9}>
-            <WrapSwitcher>
-              <div className="switcher-title">{t('form.ConnectObservertitle')}</div>
-              <Switcher value={isObserver} setValue={changeisObserver} />
-            </WrapSwitcher>
-          </Col>
+          {typeForm.type === 'connect' && (
+            <Col span={9}>
+              <WrapSwitcher>
+                <div className="switcher-title">
+                  {t('form.ConnectObservertitle')}
+                </div>
+                <Switcher value={isObserver} setValue={changeisObserver} />
+              </WrapSwitcher>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col span={24}>

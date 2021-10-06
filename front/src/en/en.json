@@ -14,6 +14,7 @@
   },
   "form": {
     "formTitle": "Connect to lobby",
+    "formTitleisCreat": "Create lobby",
     "inputFirstName": "Your first name:",
     "inputLastName": "Your last name:",
     "inputJobPosition": "Your job position:",

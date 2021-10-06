@@ -15,6 +15,8 @@ export interface IRedux {
   auth: boolean;
   typeForm: ItypeNamePaylod;
   roomInfo: IRoomInfo;
+  role: string;
+  isgame: boolean;
 }
 
 export interface IValueIssueForm {
@@ -30,6 +32,7 @@ export interface IIssues {
 }
 
 export interface IRoomInfo {
+  status?: number;
   id: string;
   code: string;
   users: {
@@ -55,4 +58,35 @@ export interface IUser {
   role: string;
   jobPosition: string;
   image: string;
+}
+
+export interface IDeck {
+  id: number;
+  name: string;
+  short: string;
+  value: Array<number | string>;
+}
+
+export interface IUsers {
+  id: number;
+  roomId: number;
+  name: string;
+  surname: string;
+  jobPosition: string;
+  image: string;
+  role: string;
+}
+
+export interface IUserJson {
+  name: string;
+  surname: string;
+  jobPosition: string;
+  image: string;
+  role: string;
+  idSocket: string;
+}
+
+export interface IReconnect {
+  socketId: string;
+  roomCode: string;
 }
