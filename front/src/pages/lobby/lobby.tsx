@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import './lobby.scss';
 import socket, { isConnect } from '../../socket';
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, fetchAllInfo } from '../../store/roomInfo';
 import { IReconnect, IRedux, IRoomInfo, IUser, IUserJson } from '../../interfaces';
 import Room from '../../components/room/Room';
-import { loginAuth } from '../../store/authslice';
+import Game from '../../components/game/Game';
 
 type QuizParams = {
   idlobby: string;
@@ -18,17 +18,15 @@ const Lobby = () => {
   const { idlobby } = useParams<QuizParams>();
   const roomInfo = useSelector<IRedux, IRoomInfo>((state) => state.roomInfo);
   const [isOpenSocket, setIsOpenSocket] = useState(isConnect);
-
+  const isGame = useSelector<IRedux, boolean>((state) => state.isgame);
   const isLoggin = () => {
     if (roomInfo.status === 400) {
-      console.log('???');
-
       window.location.assign(`http://${window.location.host}/404`);
     }
   };
 
   const isReload = () => {
-    const promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve) => {
       setInterval(() => {
         if (isConnect === true) {
           resolve(isConnect);
@@ -86,11 +84,7 @@ const Lobby = () => {
     isLoggin();
   }, [roomInfo]);
 
-  return (
-    <>
-      <Room idlobby={idlobby}></Room>
-    </>
-  );
+  return <>{!isGame ? <Room idlobby={idlobby}></Room> : <Game></Game>}</>;
 };
 
 export default Lobby;

@@ -16,6 +16,7 @@ export interface IRedux {
   typeForm: ItypeNamePaylod;
   roomInfo: IRoomInfo;
   role: string;
+  isgame: boolean;
 }
 
 export interface IValueIssueForm {
